@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>2048 Game</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div id="score-container">
+  <span>Score: </span><span id="score">0</span>
+</div>
+<div id="game-board"></div>
+<div id="controls">
+  <button id="up">↑</button>
+  <button id="left">←</button>
+  <button id="down">↓</button>
+  <button id="right">→</button>
+</div>
+
+<!-- 弹窗 -->
+<div id="end-game-modal" class="modal">
+    <div class="modal-content">
+      <h2>游戏结束!</h2>
+      <p>最近得分:</p>
+      <ul id="recent-scores"></ul>
+      <button id="restart-btn">重新开始</button>
+    </div>
+</div>
+<!-- 游戏规则弹窗 -->
+<div id="rules-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close">&times;</span>
+      <h2>2048 游戏规则</h2>
+      <p>欢迎来到2048游戏！游戏的目标是通过合并相同数字的方块来获得2048方块。</p>
+      <p>你可以使用键盘上的方向键或屏幕上的按钮来移动方块：</p>
+      <ul>
+        <li>上箭头或向上按钮：所有方块向上移动并合并。</li>
+        <li>下箭头或向下按钮：所有方块向下移动并合并。</li>
+        <li>左箭头或向左按钮：所有方块向左移动并合并。</li>
+        <li>右箭头或向右按钮：所有方块向右移动并合并。</li>
+      </ul>
+      <p>当两个相同数字的方块碰撞时，它们会合并成一个新的方块，其值为这两个方块值之和。每次移动后都会在空位随机生成一个新方块，可能是2或4。</p>
+      <p>祝你好运，玩得开心！</p>
+      <button id="start-game-btn">开始游戏</button> 
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
