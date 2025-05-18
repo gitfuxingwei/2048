@@ -147,6 +147,17 @@ async function moveRight() {
 
 // 检查游戏状态
 function checkGameState() {
+  // 检查是否有2048方块，如果有则显示胜利弹窗
+  for (let r = 0; r < boardSize; r++) {
+    for (let c = 0; c < boardSize; c++) {
+      if (board[r][c] === 2048) {
+        showWinModal();
+        return true; // 游戏胜利
+      }
+    }
+  }
+  
+  // 检查是否还有可移动的方块
   for (let r = 0; r < boardSize; r++) {
     for (let c = 0; c < boardSize; c++) {
       if (board[r][c] === 0 || (c < boardSize - 1 && board[r][c] === board[r][c + 1]) ||
@@ -209,6 +220,78 @@ document.getElementById('close-modal').addEventListener('click', hideRulesModal)
 
 // 绑定开始游戏按钮点击事件
 document.getElementById('start-game-btn').addEventListener('click', hideRulesModal);
+
+// 创建烟花特效
+function createFirework(x, y) {
+  const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+  const firework = document.createElement('div');
+  firework.className = 'firework';
+  firework.style.left = `${x}px`;
+  firework.style.top = `${y}px`;
+  firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+  document.body.appendChild(firework);
+  
+  // 烟花爆炸动画
+  setTimeout(() => {
+    firework.classList.add('explode');
+    setTimeout(() => {
+      document.body.removeChild(firework);
+    }, 1000);
+  }, 100);
+}
+
+// 显示胜利弹窗
+function showWinModal() {
+  const currentScore = calculateTotalScore();
+  recentScores.push(currentScore);
+  
+  // 确保只保留最近五局的成绩
+  if (recentScores.length > 5) {
+    recentScores.shift();
+  }
+
+  // 创建胜利弹窗
+  const winModal = document.createElement('div');
+  winModal.id = 'win-modal';
+  winModal.className = 'modal';
+  winModal.innerHTML = `
+    <div class="modal-content">
+      <h2>恭喜你通关!</h2>
+      <p>你成功合成了2048方块!</p>
+      <p>最终得分: ${currentScore}</p>
+      <button id="confirm-btn">确认</button>
+    </div>
+  `;
+  document.body.appendChild(winModal);
+  winModal.style.display = 'flex';
+  
+  // 绑定确认按钮点击事件
+  document.getElementById('confirm-btn').addEventListener('click', () => {
+    hideWinModal();
+    restartGame();
+  });
+  
+  // 显示烟花特效
+  const fireworksCount = 20;
+  const intervalId = setInterval(() => {
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+    createFirework(x, y);
+  }, 300);
+  
+  // 10秒后停止烟花
+  setTimeout(() => {
+    clearInterval(intervalId);
+  }, 10000);
+}
+
+// 隐藏胜利弹窗
+function hideWinModal() {
+  const winModal = document.getElementById('win-modal');
+  if (winModal) {
+    document.body.removeChild(winModal);
+  }
+}
 
 document.addEventListener('DOMContentLoaded', async function() {
   initBoard();
